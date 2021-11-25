@@ -17,28 +17,52 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   var qIndex = 0;
+  var result = 0;
   final questions = const [
     {
       'question': 'What is 1?',
-      'answers': ['1', '2', '3']
+      'options': [1, 2, 3],
+      'ans':1
     },
     {
       'question': 'What is 5?',
-      'answers': ['4', '6', '5']
+      'options': [4, 6, 5],
+      'ans':5
     },
     {
-      'question': 'What is 9?',
-      'answers': ['8', '9', '7']
+      'question': 'What is 4*16?',
+      'options': [64, 65, 66],
+      'ans':64
+    },
+    {
+      'question': 'What is 4/2?',
+      'options': [8, 9, 2],
+      'ans':2
+    },
+    {
+      'question': 'What is 50%7?',
+      'options': [8, 1, 7],
+      'ans':1
+    },
+    {
+      'question': 'What is 15*3/9?',
+      'options': [8, 9, 5],
+      'ans':5
     },
   ];
 
-  void answer() {
+  void answer(int ans) {
     setState(() {
-      if (qIndex == 2) {
+      if(questions[qIndex]['ans']==ans){
+        result++;
+      }
+
+      if (qIndex == questions.length-1) {
         qIndex = 0;
       } else {
         qIndex++;
       }
+
     });
   }
 
@@ -54,8 +78,9 @@ class MyAppState extends State<MyApp> {
             Question(
               questions[qIndex]['question'] as String,
             ),
-            ...(questions[qIndex]['answers'] as List<String>)
-                .map((ans) => Answer(answer, ans))
+            ...(questions[qIndex]['options'] as List<int>)
+                .map((ans) => Answer(()=>answer(ans), ans)),
+            Text('Your Score : '+result.toString())
           ],
         ),
       ),
