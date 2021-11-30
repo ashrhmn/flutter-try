@@ -1,16 +1,8 @@
-import 'package:first_app/answer.dart';
-import 'package:first_app/question.dart';
-import 'package:first_app/widgets/new_transaction.dart';
-import 'package:first_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 import 'models/transaction.dart';
-
-import 'package:flutter/material.dart';
-
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
-import './models/transaction.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,9 +14,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter App',
-      home: ExpenseApp(),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        fontFamily: 'QuickSand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              bodyText1: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+              ),
+            ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      home: const ExpenseApp(),
     );
   }
 }
@@ -40,9 +49,9 @@ class ExpenseApp extends StatefulWidget {
 
 class ExpenseAppState extends State<ExpenseApp> {
   final List<Transaction> _userTransactions = [
-    Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
-    Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
-    Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+    // Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+    // Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+    // Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
   ];
 
   void addTransaction(Transaction transaction) {
@@ -62,40 +71,41 @@ class ExpenseAppState extends State<ExpenseApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expenses'),
-          actions: [
-            IconButton(
-              onPressed: () => startAddNewTransaction(context),
-              icon: const Icon(Icons.add),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expenses'),
+        actions: [
+          IconButton(
+            onPressed: () => startAddNewTransaction(context),
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: const Text('Chart'),
+              width: double.infinity,
+              alignment: AlignmentDirectional.center,
+              height: 20,
             ),
+            TransactionList(userTransactions: _userTransactions)
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: const Text('Chart'),
-                width: double.infinity,
-                alignment: AlignmentDirectional.center,
-                height: 20,
-              ),
-              // const TransactionsWidget(addTransaction: addTransaction(transaction),)
-              TransactionList(userTransactions: _userTransactions)
-            ],
-          ),
-        ),
-        floatingActionButton: Builder(
-          builder: (context) => FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              startAddNewTransaction(context);
-            },
-          ),
-        ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => startAddNewTransaction(context),
+        child: const Icon(Icons.add),
+      ),
+      // floatingActionButton: Builder(
+      //   builder: (context) => FloatingActionButton(
+      //     child: const Icon(Icons.add),
+      //     onPressed: () {
+      //       startAddNewTransaction(context);
+      //     },
+      //   ),
+      // ),
     );
   }
 }

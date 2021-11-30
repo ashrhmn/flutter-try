@@ -15,15 +15,16 @@ class TransactionItem extends StatelessWidget {
             Container(
               child: Text(
                 '\$${transaction.amount.toStringAsFixed(2)}',
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColorDark,
+                ),
                 textAlign: TextAlign.right,
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.purple,
+                  color: Theme.of(context).primaryColor,
                   width: 2,
                 ),
               ),
@@ -40,10 +41,7 @@ class TransactionItem extends StatelessWidget {
                 children: [
                   Text(
                     transaction.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                   Text(
                     DateFormat('yMMMd').format(transaction.time),
