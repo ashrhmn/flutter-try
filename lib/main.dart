@@ -1,12 +1,32 @@
 import 'package:first_app/answer.dart';
 import 'package:first_app/question.dart';
+import 'package:first_app/widgets/new_transaction.dart';
 import 'package:first_app/widgets/transaction_list.dart';
-import 'package:first_app/widgets/transactions.dart';
 import 'package:flutter/material.dart';
 
+import 'models/transaction.dart';
+
+import 'package:flutter/material.dart';
+
+import './widgets/new_transaction.dart';
+import './widgets/transaction_list.dart';
+import './models/transaction.dart';
+
 void main() {
-  // runApp(const MyApp());
-  runApp(const ExpenseApp());
+  runApp(const MyApp());
+  // runApp(const ExpenseApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'Flutter App',
+      home: ExpenseApp(),
+    );
+  }
 }
 
 class ExpenseApp extends StatefulWidget {
@@ -19,10 +39,26 @@ class ExpenseApp extends StatefulWidget {
 }
 
 class ExpenseAppState extends State<ExpenseApp> {
-  // late String titleInput;
-  // late String amountInput;
-  var titleController = TextEditingController();
-  var amountController = TextEditingController();
+  final List<Transaction> _userTransactions = [
+    Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+    Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+    Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+  ];
+
+  void addTransaction(Transaction transaction) {
+    setState(() {
+      _userTransactions.add(transaction);
+    });
+  }
+
+  void startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (ctx) {
+        return NewTransaction(addTransaction);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +66,12 @@ class ExpenseAppState extends State<ExpenseApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Expenses'),
+          actions: [
+            IconButton(
+              onPressed: () => startAddNewTransaction(context),
+              icon: const Icon(Icons.add),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -40,8 +82,17 @@ class ExpenseAppState extends State<ExpenseApp> {
                 alignment: AlignmentDirectional.center,
                 height: 20,
               ),
-              const TransactionsWidget()
+              // const TransactionsWidget(addTransaction: addTransaction(transaction),)
+              TransactionList(userTransactions: _userTransactions)
             ],
+          ),
+        ),
+        floatingActionButton: Builder(
+          builder: (context) => FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              startAddNewTransaction(context);
+            },
           ),
         ),
       ),
@@ -49,83 +100,106 @@ class ExpenseAppState extends State<ExpenseApp> {
   }
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    return MyAppState();
-  }
-}
+// void main() => runApp(const MyApp());
 
-class MyAppState extends State<MyApp> {
-  var qIndex = 0;
-  var result = 0;
-  final questions = const [
-    {
-      'question': 'What is 1?',
-      'options': [1, 2, 3],
-      'ans': 1
-    },
-    {
-      'question': 'What is 5?',
-      'options': [4, 6, 5],
-      'ans': 5
-    },
-    {
-      'question': 'What is 4*16?',
-      'options': [64, 65, 66],
-      'ans': 64
-    },
-    {
-      'question': 'What is 4/2?',
-      'options': [8, 9, 2],
-      'ans': 2
-    },
-    {
-      'question': 'What is 50%7?',
-      'options': [8, 1, 7],
-      'ans': 1
-    },
-    {
-      'question': 'What is 15*3/9?',
-      'options': [8, 9, 5],
-      'ans': 5
-    },
-  ];
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
 
-  void answer(int ans) {
-    setState(() {
-      if (questions[qIndex]['ans'] == ans) {
-        result++;
-      }
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter App',
+//       home: MyHomePage(),
+//     );
+//   }
+// }
 
-      if (qIndex == questions.length - 1) {
-        qIndex = 0;
-      } else {
-        qIndex++;
-      }
-    });
-  }
+// class MyHomePage extends StatefulWidget {
+//   // String titleInput;
+//   // String amountInput;
+//   @override
+//   _MyHomePageState createState() => _MyHomePageState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My App'),
-        ),
-        body: Column(
-          children: [
-            Question(
-              questions[qIndex]['question'] as String,
-            ),
-            ...(questions[qIndex]['options'] as List<int>)
-                .map((ans) => Answer(() => answer(ans), ans)),
-            Text('Your Score : ' + result.toString())
-          ],
-        ),
-      ),
-    );
-  }
-}
+// class _MyHomePageState extends State<MyHomePage> {
+//   final List<Transaction> _userTransactions = [
+//     Transaction(
+//       id: 't1',
+//       name: 'New Shoes',
+//       amount: 69.99,
+//       time: DateTime.now(),
+//     ),
+//     Transaction(
+//       id: 't2',
+//       name: 'Weekly Groceries',
+//       amount: 16.53,
+//       time: DateTime.now(),
+//     ),
+//   ];
+
+//   void _addNewTransaction(String txTitle, double txAmount) {
+//     final newTx = Transaction(
+//       name: txTitle,
+//       amount: txAmount,
+//       time: DateTime.now(),
+//       id: DateTime.now().toString(),
+//     );
+
+//     setState(() {
+//       _userTransactions.add(newTx);
+//     });
+//   }
+
+//   void _startAddNewTransaction(BuildContext ctx) {
+//     showModalBottomSheet(
+//       context: ctx,
+//       builder: (_) {
+//         return GestureDetector(
+//           onTap: () {},
+//           child: NewTransaction(_addNewTransaction),
+//           behavior: HitTestBehavior.opaque,
+//         );
+//       },
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Flutter App'),
+//         actions: <Widget>[
+//           IconButton(
+//             icon: Icon(Icons.add),
+//             onPressed: () => _startAddNewTransaction(context),
+//           ),
+//         ],
+//       ),
+//       body: SingleChildScrollView(
+//         child: Column(
+//           // mainAxisAlignment: MainAxisAlignment.start,
+//           crossAxisAlignment: CrossAxisAlignment.stretch,
+//           children: <Widget>[
+//             Container(
+//               width: double.infinity,
+//               child: const Card(
+//                 color: Colors.blue,
+//                 child: Text('CHART!'),
+//                 elevation: 5,
+//               ),
+//             ),
+//             TransactionList(
+//               userTransactions: _userTransactions,
+//             ),
+//           ],
+//         ),
+//       ),
+//       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+//       floatingActionButton: FloatingActionButton(
+//         child: Icon(Icons.add),
+//         onPressed: () => _startAddNewTransaction(context),
+//       ),
+//     );
+//   }
+// }
