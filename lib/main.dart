@@ -31,16 +31,18 @@ class ExpenseAppState extends State<ExpenseApp> {
         appBar: AppBar(
           title: const Text('Expenses'),
         ),
-        body: Column(
-          children: <Widget>[
-            Container(
-              child: const Text('Chart'),
-              width: double.infinity,
-              alignment: AlignmentDirectional.center,
-              height: 20,
-            ),
-            const TransactionsWidget()
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: const Text('Chart'),
+                width: double.infinity,
+                alignment: AlignmentDirectional.center,
+                height: 20,
+              ),
+              const TransactionsWidget()
+            ],
+          ),
         ),
       ),
     );

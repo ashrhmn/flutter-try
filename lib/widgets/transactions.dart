@@ -14,6 +14,15 @@ final List<Transaction> _userTransactions = [
   Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
   Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
   Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+  Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+  Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+  Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+  Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+  Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+  Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+  Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+  Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+  Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
 ];
 
 class _TransactionsWidgetState extends State<TransactionsWidget> {
