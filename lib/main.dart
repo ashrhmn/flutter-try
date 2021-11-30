@@ -1,6 +1,7 @@
 import 'package:first_app/answer.dart';
 import 'package:first_app/question.dart';
 import 'package:first_app/widgets/transaction_list.dart';
+import 'package:first_app/widgets/transactions.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,50 +39,7 @@ class ExpenseAppState extends State<ExpenseApp> {
               alignment: AlignmentDirectional.center,
               height: 20,
             ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Card(
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          TextField(
-                            decoration: const InputDecoration(
-                              label: Text('Title'),
-                            ),
-                            controller: titleController,
-                            // onChanged: (value) {
-                            //   titleInput = value;
-                            // },
-                          ),
-                          TextField(
-                            decoration: const InputDecoration(
-                              label: Text('Amount'),
-                            ),
-                            controller: amountController,
-                            // onChanged: (value) {
-                            //   amountInput = value;
-                            // },
-                          ),
-                          TextButton(
-                            onPressed: () => {},
-                            child: const Text(
-                              'Add Transaction',
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                          const TransactionList()
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              width: double.infinity,
-              alignment: AlignmentDirectional.center,
-            ),
+            const TransactionsWidget()
           ],
         ),
       ),
