@@ -34,7 +34,7 @@ class TransactionList extends StatelessWidget {
             ],
           )
         : SizedBox(
-            height: 500,
+            // height: 500,
             child: ListView.builder(
               itemBuilder: (ctx, index) {
                 return TransactionItem(
