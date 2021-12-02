@@ -1,3 +1,4 @@
+import 'package:first_app/widgets/chart.dart';
 import 'package:flutter/material.dart';
 
 import 'models/transaction.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         textTheme: ThemeData.light().textTheme.copyWith(
               bodyText1: const TextStyle(
                 fontFamily: 'OpenSans',
-                fontSize: 20,
+                fontSize: 22,
               ),
             ),
         appBarTheme: const AppBarTheme(
@@ -49,14 +50,20 @@ class ExpenseApp extends StatefulWidget {
 
 class ExpenseAppState extends State<ExpenseApp> {
   final List<Transaction> _userTransactions = [
-    // Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
-    // Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
-    // Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+    Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
+    Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
+    Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
   ];
 
   void addTransaction(Transaction transaction) {
     setState(() {
       _userTransactions.add(transaction);
+    });
+  }
+
+  void deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((txn) => txn.id == id);
     });
   }
 
@@ -67,6 +74,13 @@ class ExpenseAppState extends State<ExpenseApp> {
         return NewTransaction(addTransaction);
       },
     );
+  }
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions
+        .where((transaction) => transaction.time
+            .isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList();
   }
 
   @override
@@ -84,13 +98,11 @@ class ExpenseAppState extends State<ExpenseApp> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              child: const Text('Chart'),
-              width: double.infinity,
-              alignment: AlignmentDirectional.center,
-              height: 20,
-            ),
-            TransactionList(userTransactions: _userTransactions)
+            Chart(_recentTransactions),
+            TransactionList(
+              userTransactions: _userTransactions,
+              deleteTransaction: deleteTransaction,
+            )
           ],
         ),
       ),
@@ -98,14 +110,6 @@ class ExpenseAppState extends State<ExpenseApp> {
         onPressed: () => startAddNewTransaction(context),
         child: const Icon(Icons.add),
       ),
-      // floatingActionButton: Builder(
-      //   builder: (context) => FloatingActionButton(
-      //     child: const Icon(Icons.add),
-      //     onPressed: () {
-      //       startAddNewTransaction(context);
-      //     },
-      //   ),
-      // ),
     );
   }
 }

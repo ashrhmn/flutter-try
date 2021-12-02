@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
+  final Function deleteTransaction;
 
-  const TransactionList({Key? key, required this.userTransactions})
+  const TransactionList(
+      {Key? key,
+      required this.userTransactions,
+      required this.deleteTransaction})
       : super(key: key);
 
   @override
@@ -30,10 +34,13 @@ class TransactionList extends StatelessWidget {
             ],
           )
         : SizedBox(
-            height: 400,
+            height: 500,
             child: ListView.builder(
               itemBuilder: (ctx, index) {
-                return TransactionItem(userTransactions[index]);
+                return TransactionItem(
+                  transaction: userTransactions[index],
+                  deleteTransaction: deleteTransaction,
+                );
               },
               itemCount: userTransactions.length,
             ),

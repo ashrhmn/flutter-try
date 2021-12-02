@@ -1,5 +1,6 @@
 import 'package:first_app/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
@@ -12,8 +13,9 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+
+  DateTime? _selectedDate;
 
   addTxHandler() {
     if (titleController.text == "" ||
@@ -22,12 +24,25 @@ class _NewTransactionState extends State<NewTransaction> {
     }
 
     widget.addTransaction(Transaction(
-      id: 'id',
+      id: DateTime.now().toString(),
       name: titleController.text,
       amount: double.parse(amountController.text),
-      time: DateTime.now(),
+      time: _selectedDate == null ? DateTime.now() : _selectedDate as DateTime,
     ));
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      setState(() {
+        _selectedDate = value;
+      });
+    });
   }
 
   @override
@@ -51,12 +66,28 @@ class _NewTransactionState extends State<NewTransaction> {
             controller: amountController,
             onSubmitted: (_) => addTxHandler(),
           ),
-          TextButton(
-            onPressed: addTxHandler,
-            child: const Text(
-              'Add Transaction',
-              textAlign: TextAlign.right,
+          SizedBox(
+            height: 70,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(_selectedDate == null
+                      ? 'No date chosen'
+                      : 'Picked Date : ${DateFormat.yMd().format(_selectedDate as DateTime)}'),
+                ),
+                TextButton(
+                  onPressed: _presentDatePicker,
+                  child: const Text(
+                    'Choose Date',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
             ),
+          ),
+          ElevatedButton(
+            onPressed: addTxHandler,
+            child: const Text('Add Transaction'),
           ),
         ],
       ),
