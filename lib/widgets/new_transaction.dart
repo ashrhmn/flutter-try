@@ -47,49 +47,56 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          TextField(
-            decoration: const InputDecoration(
-              label: Text('Title'),
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 10,
+          right: 10,
+          left: 10,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 40,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                label: Text('Title'),
+              ),
+              controller: titleController,
             ),
-            controller: titleController,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              label: Text('Amount'),
+            TextField(
+              decoration: const InputDecoration(
+                label: Text('Amount'),
+              ),
+              keyboardType: TextInputType.number,
+              controller: amountController,
+              onSubmitted: (_) => addTxHandler(),
             ),
-            keyboardType: TextInputType.number,
-            controller: amountController,
-            onSubmitted: (_) => addTxHandler(),
-          ),
-          SizedBox(
-            height: 70,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(_selectedDate == null
-                      ? 'No date chosen'
-                      : 'Picked Date : ${DateFormat.yMd().format(_selectedDate as DateTime)}'),
-                ),
-                TextButton(
-                  onPressed: _presentDatePicker,
-                  child: const Text(
-                    'Choose Date',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+            SizedBox(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? 'No date chosen'
+                        : 'Picked Date : ${DateFormat.yMd().format(_selectedDate as DateTime)}'),
                   ),
-                )
-              ],
+                  TextButton(
+                    onPressed: _presentDatePicker,
+                    child: const Text(
+                      'Choose Date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: addTxHandler,
-            child: const Text('Add Transaction'),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: addTxHandler,
+              child: const Text('Add Transaction'),
+            ),
+          ],
+        ),
       ),
     );
   }

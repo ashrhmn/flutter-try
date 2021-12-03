@@ -14,36 +14,41 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return userTransactions.isEmpty
-        ? Column(
-            children: [
-              Text(
-                'No Transaction',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: 200,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  fit: BoxFit.cover,
+    return LayoutBuilder(builder: (context, constraints) {
+      return userTransactions.isEmpty
+          ? Column(
+              children: [
+                Container(
+                  height: constraints.maxHeight * 0.1,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: FittedBox(
+                    child: Text(
+                      'No Transactions added yet!!!',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
                 ),
+                Container(
+                  height: constraints.maxHeight * 0.7,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            )
+          : SizedBox(
+              child: ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return TransactionItem(
+                    transaction: userTransactions[index],
+                    deleteTransaction: deleteTransaction,
+                  );
+                },
+                itemCount: userTransactions.length,
               ),
-            ],
-          )
-        : SizedBox(
-            // height: 500,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                return TransactionItem(
-                  transaction: userTransactions[index],
-                  deleteTransaction: deleteTransaction,
-                );
-              },
-              itemCount: userTransactions.length,
-            ),
-          );
+            );
+    });
   }
 }

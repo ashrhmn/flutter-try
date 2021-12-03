@@ -50,9 +50,24 @@ class ExpenseApp extends StatefulWidget {
 
 class ExpenseAppState extends State<ExpenseApp> {
   final List<Transaction> _userTransactions = [
-    Transaction(id: '12', name: 'Shoes', amount: 69.99, time: DateTime.now()),
-    Transaction(id: '22', name: 'Socks', amount: 19.99, time: DateTime.now()),
-    Transaction(id: '31', name: 'Legs', amount: 99.99, time: DateTime.now()),
+    Transaction(
+      id: '12',
+      name: 'Shoes',
+      amount: 69.99,
+      time: DateTime.now(),
+    ),
+    Transaction(
+      id: '22',
+      name: 'Socks',
+      amount: 19.99,
+      time: DateTime.now(),
+    ),
+    Transaction(
+      id: '31',
+      name: 'Legs',
+      amount: 99.99,
+      time: DateTime.now(),
+    ),
   ];
 
   void addTransaction(Transaction transaction) {
@@ -78,13 +93,23 @@ class ExpenseAppState extends State<ExpenseApp> {
 
   List<Transaction> get _recentTransactions {
     return _userTransactions
-        .where((transaction) => transaction.time
-            .isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .where(
+          (transaction) => transaction.time.isAfter(
+            DateTime.now().subtract(
+              const Duration(days: 7),
+            ),
+          ),
+        )
         .toList();
   }
 
+  var showChart = true;
+
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: const Text('Expenses'),
       actions: [
@@ -94,28 +119,46 @@ class ExpenseAppState extends State<ExpenseApp> {
         ),
       ],
     );
+
+    final appViewHeight = (MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top);
+
+    final chartWidget = SizedBox(
+      height: appViewHeight * (isLandscape ? 0.7 : 0.3),
+      child: Chart(_recentTransactions),
+    );
+
+    final txnWidget = SizedBox(
+      height: appViewHeight * (isLandscape ? 0.8 : 0.7),
+      child: TransactionList(
+        userTransactions: _userTransactions,
+        deleteTransaction: deleteTransaction,
+      ),
+    );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            SizedBox(
-              child: Chart(_recentTransactions),
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.3,
-            ),
-            SizedBox(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.7,
-              child: TransactionList(
-                userTransactions: _userTransactions,
-                deleteTransaction: deleteTransaction,
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Show Chart"),
+                  Switch(
+                    value: showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        showChart = val;
+                      });
+                    },
+                  ),
+                ],
               ),
-            )
+            if (!(isLandscape && !showChart)) chartWidget,
+            txnWidget,
           ],
         ),
       ),
@@ -126,6 +169,17 @@ class ExpenseAppState extends State<ExpenseApp> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 // void main() => runApp(const MyApp());

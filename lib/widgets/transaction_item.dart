@@ -28,61 +28,24 @@ class TransactionItem extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText1,
         ),
         subtitle: Text(DateFormat.yMMMd().format(transaction.time)),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          color: Theme.of(context).errorColor,
-          onPressed: () => deleteTransaction(transaction.id),
-        ),
+        trailing: MediaQuery.of(context).size.width > 360
+            ? TextButton.icon(
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).errorColor,
+                ),
+                label: Text(
+                  'Delete',
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+                onPressed: () => deleteTransaction(transaction.id),
+              )
+            : IconButton(
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).errorColor,
+                onPressed: () => deleteTransaction(transaction.id),
+              ),
       ),
     );
-    // return Card(
-    //   elevation: 5,
-    //   child: Container(
-    //     child: Row(
-    //       children: [
-    //         Container(
-    //           child: Text(
-    //             '\$${transaction.amount.toStringAsFixed(2)}',
-    //             style: TextStyle(
-    //               fontSize: 20,
-    //               fontWeight: FontWeight.bold,
-    //               color: Theme.of(context).primaryColorDark,
-    //             ),
-    //             textAlign: TextAlign.right,
-    //           ),
-    //           decoration: BoxDecoration(
-    //             border: Border.all(
-    //               color: Theme.of(context).primaryColor,
-    //               width: 2,
-    //             ),
-    //           ),
-    //           width: 80,
-    //           padding: const EdgeInsets.symmetric(
-    //             horizontal: 5,
-    //             vertical: 10,
-    //           ),
-    //           margin: const EdgeInsets.symmetric(horizontal: 15),
-    //         ),
-    //         Container(
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               Text(
-    //                 transaction.name,
-    //                 style: Theme.of(context).textTheme.bodyText1,
-    //               ),
-    //               Text(
-    //                 DateFormat('yMMMd').format(transaction.time),
-    //                 style: const TextStyle(color: Colors.grey),
-    //               )
-    //             ],
-    //           ),
-    //           margin: const EdgeInsets.symmetric(horizontal: 15),
-    //         )
-    //       ],
-    //     ),
-    //     padding: const EdgeInsets.symmetric(vertical: 10),
-    //   ),
-    // );
   }
 }
