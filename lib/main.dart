@@ -147,7 +147,7 @@ class ExpenseAppState extends State<ExpenseApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Show Chart"),
-                  Switch(
+                  Switch.adaptive(
                     value: showChart,
                     onChanged: (val) {
                       setState(() {
